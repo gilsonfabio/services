@@ -5,6 +5,11 @@ import qs from 'qs';
 
 import api from './components/Services/api';
 import { FaSearch } from 'react-icons/fa';
+import { FaCogs } from 'react-icons/fa';
+import { FaUsersCog } from 'react-icons/fa';
+import { FaUserAlt } from 'react-icons/fa';
+import Link from 'next/link';
+import Pagination from './components/Pagination/Pagination';
 
 type ModServices = {
     "msvId": number;
@@ -17,8 +22,23 @@ type TipServices = {
 }
 
 type ServicesProps = {
-    "srvId": number;
-    "srvDescricao": string;
+    "pagination": {
+		"page": number;
+		"per_page": number;
+		"lastPage": number;
+		"countUser": number;
+		"offset": number
+    }
+    "srvId": number; 
+    "srvMsvId": number; 
+    "srvTsvId": number; 
+    "srvDescricao": number; 
+    "srvSecId": number; 
+    "srvObjetivo": string; 
+    "srvInformacao": string; 
+    "srvLink": string; 
+    "srvStatus": string;
+    "secDescricao": string;
 }
 
 interface filtros {
@@ -71,13 +91,20 @@ export default function Home() {
         delete testeJson.modalidade;
         delete testeJson.tipo;        
         delete testeJson.searchString;
+        delete testeJson.page;
+        testeJson.page = 1;
+        delete testeJson.per_page;
+        testeJson.per_page = perPageDefault;
+
+        console.log(testeJson);
+
         axios({
             method: 'post',    
-            url: `https://webio.aparecida.go.gov.br/api/lict/v1/filtrar/licitacoes`,
-            data: qs.stringify(testeJson),
+            url: `http://localhost:3333/servicos`,
+            data: testeJson,
         }).then(function(response) {
-            setServicos(response.data.items)
-            setPages(response.data.paginate.lastPage);
+            setServicos(response.data.servicos)
+            setPages(response.data.pagination.lastPage);
         }).catch(function(error) {
             console.log(error)
         })
@@ -126,11 +153,11 @@ export default function Home() {
 
             axios({
                 method: 'post',    
-                url: `https://webio.aparecida.go.gov.br/api/lict/v1/filtrar/licitacoes`,
-                data: qs.stringify(testeJson),
+                url: `http://localhost:3333/servicos`,
+                data: testeJson,
             }).then(function(response) {
-                setServicos(response.data.items)
-                setPages(response.data.paginate.lastPage) 
+                setServicos(response.data.servicos)
+                setPages(response.data.pagination.lastPage) 
             }).catch(function(error) {
                 console.log(error)
             })              
@@ -163,10 +190,10 @@ export default function Home() {
 
             axios({
                 method: 'post',    
-                url: `https://webio.aparecida.go.gov.br/api/lict/v1/filtrar/licitacoes`,
-                data: qs.stringify(testeJson),
+                url: `http://localhost:3333/servicos`,
+                data: testeJson,
             }).then(function(response) {
-                setServicos(response.data.items)
+                setServicos(response.data.servicos)
             }).catch(function(error) {
                 console.log(error)
             })              
@@ -213,12 +240,12 @@ export default function Home() {
     }
 
     return (
-        <div className="flex flex-col justify-center ml-20 mr-20">
+        <div className="flex flex-col justify-center ml-20 mr-20 h-auto min-h-screen">
             <div className="flex justify-center w-full ">
                 Bem-vindo ao portal de serviços
             </div>  
-            <div className="flex flex-row h-full ">      
-                <div className="flex flex-col w-[20%] h-screen bg-gray-300">
+            <div className="flex flex-row ">      
+                <div className="flex flex-col w-[20%] bg-gray-300">
                     <span className="text-green-700 text-base font-semibold ml-3">
                         Filtro de Serviços
                     </span>
@@ -279,7 +306,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div> 
-                <div className="flex flex-col items-center w-[80%] h-screen bg-gray-200">
+                <div className="flex flex-col items-center w-[80%] bg-gray-200">
                     <div className='w-[90%] mt-4'>
                         <div className='flex flex-row justify-start items-center'>
                             <input type="search" 
@@ -298,8 +325,57 @@ export default function Home() {
                             </button>
                         </div>
                     </div>
+                    <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800'> 
+                        <div className='w-full h-auto mr-2 dark:bg-[#F3F3F3] '> 
+                        <div>                            
+                        <div className='flex flex-col w-full h-full text-black'>
+                            <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
+                            {servicos?.map((item:any, idx) => {
+                                return <Link key={idx} href={"/"}>
+                                    <div className='bg-white mt-1 mb-3 rounded overflow-hidden shadow-lg hover:bg-[#008C3D]/40'> 
+                                    <div className="flex flex-row items-start px-2 py-0 mt-1 ">
+                                        <div className="flex w-auto h-auto bg-green-600 rounded-full items-start p-2">
+                                            <FaCogs className="w-6 h-6 text-white"/>
+                                        </div>
+                                        <div className="flex flex-col items-start px-2 py-1">
+                                            <div className="text-base font-bold mb-0">{item.srvDescricao}</div>
+                                        </div>                                  
+                                    </div>
+                                    <div className="flex flex-row items-start justify-between px-2 py-0 ">
+                                        <div className="flex flex-col items-start px-2 py-1">
+                                            <span className='text-[12px] font-bold'>ID</span>
+                                            <div className="text-[12px] mb-0">{item.srvId}</div>
+                                        </div> 
+                                        <div className="flex flex-col items-start px-2 py-1 ">
+                                            <span className='text-[12px] font-bold'>Secretaria</span>
+                                            <div className="text-[12px] mb-0">
+                                                {item.secDescricao}
+                                            </div>
+                                        </div>
+                                    </div>                                                                   
+                                    <div className="flex flex-row items-start justify-between px-2 ">
+                                        <div className="flex flex-col items-start px-2 py-2">
+                                            <span className='text-[12px] font-bold'>Objetivo</span>
+                                            <div className="text-[12px] mb-0">{item.srvObjetivo}</div>
+                                        </div>                
+                                    </div>
+                                    </div>                                                            
+                                </Link>                  
+                            })}
+                            </div>
+                        </div>
+                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 '> 
+                            <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>                                 
+                            </div>
+                            <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
+                                <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
+                            </div>
+                        </div>
+                    </div>
                 </div>        
             </div>    
+        </div>
+        </div>
         </div>   
     )
 }
