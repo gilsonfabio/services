@@ -4,6 +4,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import api from './components/Services/api';
+import { FaBars } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import { FaCogs } from 'react-icons/fa';
 import { FaUsersCog } from 'react-icons/fa';
@@ -54,6 +55,8 @@ export default function Home() {
     const [modalidades, setModalidades] = useState<Array<ModServices>>([]);
     const [tipos, setTipos] = useState<Array<TipServices>>([]);
     const [servicos, setServicos] = useState<Array<ServicesProps>>([]);
+    
+    const [showOptions, setShowOptions] = useState(false);
 
     const [itensPerPage, setItensPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
@@ -238,18 +241,19 @@ export default function Home() {
     function handleSearch() {
         setAtualiza(1);
     }
+    
+    const handleClick = () => {
+        setShowOptions(!showOptions);      
+    };
 
     return (
-        <div className="flex flex-col justify-center ml-20 mr-20 h-auto min-h-screen">
-            <div className="flex justify-center w-full ">
-                Bem-vindo ao portal de serviços
-            </div>  
-            <div className="flex flex-row ">      
-                <div className="flex flex-col w-[20%] bg-gray-300">
+        <div className='w-full h-auto z-30'>
+            <div className='flex flex-col md:flex-row w-full h-auto z-30'>
+                <div className='bg-gray-300 w-full md:w-[25%] h-auto z-10'>
                     <span className="text-green-700 text-base font-semibold ml-3">
                         Filtro de Serviços
                     </span>
-                    <div className='w-72 ml-3 mt-0 mb-3'>
+                    <div className='w-72 ml-3 mt-0 mb-3 z-40'>
                         <div>
                             <li className={`accordion_item ${clicked ? "active mb-2" : ""} list-none`}>
                                 <button className="button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointertext-left flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg" onClick={handleToggle}>
@@ -277,7 +281,7 @@ export default function Home() {
                             </li>                                
                         </div>
                     </div>
-                    <div className='w-72 ml-3 mt-0 mb-3'>
+                    <div className='w-72 ml-3 mt-0 mb-3 z-40'>
                         <div>
                             <li className={`accordion_item ${clickedTip ? "active mb-2" : ""} list-none`}>
                                 <button className="button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointertext-left flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg" onClick={handleToggleTip}>
@@ -305,10 +309,10 @@ export default function Home() {
                             </li>                                
                         </div>
                     </div>
-                </div> 
-                <div className="flex flex-col items-center w-[80%] bg-gray-200">
-                    <div className='w-[90%] mt-4'>
-                        <div className='flex flex-row justify-start items-center'>
+                </div>
+                <div className='flex flex-col bg-gray-400 w-full justify-center md:w-[75%] h-auto'>
+                    <div className='flex items-center justify-center md:w-full p-2'>
+                        <div className='flex flex-row justify-start items-center w-full'>
                             <input type="search" 
                                 className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" 
                                 placeholder="Busca" 
@@ -325,57 +329,58 @@ export default function Home() {
                             </button>
                         </div>
                     </div>
-                    <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800'> 
-                        <div className='w-full h-auto mr-2 dark:bg-[#F3F3F3] '> 
-                        <div>                            
-                        <div className='flex flex-col w-full h-full text-black'>
-                            <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
-                            {servicos?.map((item:any, idx) => {
-                                return <Link key={idx} href={"/"}>
-                                    <div className='bg-white mt-1 mb-3 rounded overflow-hidden shadow-lg hover:bg-[#008C3D]/40'> 
-                                    <div className="flex flex-row items-start px-2 py-0 mt-1 ">
-                                        <div className="flex w-auto h-auto bg-green-600 rounded-full items-start p-2">
-                                            <FaCogs className="w-6 h-6 text-white"/>
-                                        </div>
-                                        <div className="flex flex-col items-start px-2 py-1">
-                                            <div className="text-base font-bold mb-0">{item.srvDescricao}</div>
-                                        </div>                                  
-                                    </div>
-                                    <div className="flex flex-row items-start justify-between px-2 py-0 ">
-                                        <div className="flex flex-col items-start px-2 py-1">
-                                            <span className='text-[12px] font-bold'>ID</span>
-                                            <div className="text-[12px] mb-0">{item.srvId}</div>
-                                        </div> 
-                                        <div className="flex flex-col items-start px-2 py-1 ">
-                                            <span className='text-[12px] font-bold'>Secretaria</span>
-                                            <div className="text-[12px] mb-0">
-                                                {item.secDescricao}
+                    <div className='flex bg-gray-500 w-full h-auto '>
+                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800'> 
+                            <div className='w-full h-auto mr-2 dark:bg-[#F3F3F3] '> 
+                                <div className='flex flex-col w-full h-full text-black'>
+                                    <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
+                                    {servicos?.map((item:any, idx) => {
+                                        return <Link key={idx} href={"/"}>
+                                        <div className='bg-white mt-1 mb-3 rounded overflow-hidden shadow-lg hover:bg-[#008C3D]/40'> 
+                                            <div className="flex flex-row items-start px-2 py-0 mt-1 ">
+                                                <div className="flex w-auto h-auto bg-green-600 rounded-full items-start p-2">
+                                                    <FaCogs className="w-6 h-6 text-white"/>
+                                                </div>
+                                                <div className="flex flex-col items-start px-2 py-1">
+                                                    <div className="text-base font-bold mb-0">{item.srvDescricao}</div>
+                                                </div>                                  
                                             </div>
-                                        </div>
-                                    </div>                                                                   
-                                    <div className="flex flex-row items-start justify-between px-2 ">
-                                        <div className="flex flex-col items-start px-2 py-2">
-                                            <span className='text-[12px] font-bold'>Objetivo</span>
-                                            <div className="text-[12px] mb-0">{item.srvObjetivo}</div>
-                                        </div>                
+                                            <div className="flex flex-row items-start justify-between px-2 py-0 ">
+                                                <div className="flex flex-col items-start px-2 py-1">
+                                                    <span className='text-[12px] font-bold'>ID</span>
+                                                    <div className="text-[12px] mb-0">{item.srvId}</div>
+                                                </div> 
+                                                <div className="flex flex-col items-start px-2 py-1 ">
+                                                    <span className='text-[12px] font-bold'>Secretaria</span>
+                                                    <div className="text-[12px] mb-0">
+                                                        {item.secDescricao}
+                                                    </div>
+                                                </div>
+                                            </div>                                                                   
+                                            <div className="flex flex-row items-start justify-between px-2 ">
+                                                <div className="flex flex-col items-start px-2 py-2">
+                                                    <span className='text-[12px] font-bold'>Objetivo</span>
+                                                    <div className="text-[12px] mb-0">{item.srvObjetivo}</div>
+                                                </div>                
+                                            </div>
+                                        </div>                                                            
+                                    </Link>                  
+                                    })}
                                     </div>
-                                    </div>                                                            
-                                </Link>                  
-                            })}
-                            </div>
-                        </div>
-                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 '> 
-                            <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>                                 
-                            </div>
-                            <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
-                                <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
+                                </div>
+                                <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 '> 
+                                    <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>                                 
+                                    </div>
+                                    <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
+                                        <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>        
-            </div>    
+                </div>    
+            </div>
         </div>
-        </div>
-        </div>   
     )
 }
+

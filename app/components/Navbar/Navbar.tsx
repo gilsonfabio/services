@@ -76,7 +76,7 @@ export default function Navbar() {
                     </button>                   
                 </div>
               </div>
-        <div className={!isOpen ? 'md:hidden flex flex-col mb-3 mt-4 w-12 p-3 bg-black items-center justify-between gap-5' : 'md:hidden flex flex-col mb-3 mt-60 w-12 p-3 bg-black items-center justify-between gap-5' }>
+        <div className={!isOpen ? 'md:hidden flex flex-col mb-3 mt-4 w-12 p-3 bg-black items-center justify-between gap-5 z-20' : 'md:hidden flex flex-col mb-3 mt-60 w-12 p-3 bg-black items-center justify-between gap-5 z-20' }>
           <div className="">
             <button
               onClick={() => setIsOpen(!isOpen)}
