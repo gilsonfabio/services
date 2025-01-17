@@ -41,7 +41,9 @@ export default function Navbar() {
   return (
     <div>
       <div className='flex flex-row items-center justify-between w-full h-20 bg-black text-white px-2 md:px-20 z-10'>
-        <Image src={logoBarra} alt="" width={170} height={40} />
+        <Link href="https://www.aparecida.go.gov.br/" passHref >
+          <Image src={logoBarra} alt="" className ='w-40 md:w-64 md:h-16' />
+        </Link>  
         <div className="hidden md:block">
                 <div className="ml-10 flex items-center space-x-4">
                     <button className="text-white hover:text-gray-400 px-1 py-2 text-sm font-medium" onClick={() => {}}></button>

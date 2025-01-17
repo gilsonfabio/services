@@ -21,10 +21,10 @@ interface options {
 const Footer = ({options}:{[key:string]:any}) => {
     return (
         <div className="bg-gray-200 dark:bg-black dark:text-white p-2 grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2">  
-            <div className='flex justify-center items-center col-span-1 p-2 mt-3 '>
-            <Link href="https://www.aparecida.go.gov.br/" passHref >
-                <Image className="hover:cursor-pointer" src={imgBandeira} alt="" width={200} height={150} /> 
-            </Link>                  
+            <div className='w-auto h-auto flex justify-center items-center col-span-1 p-2 mt-3 '>
+                <Link href="https://www.aparecida.go.gov.br/" >
+                    <Image className= "w-100 h-40 hover:cursor-pointer" src={imgBandeira} alt="" /> 
+                </Link>                  
             </div>            
             <div className='col-span-1 mt-5 p-2 mr-20'>
                 <div className="md:mr-20 w-full ">
@@ -44,7 +44,7 @@ const Footer = ({options}:{[key:string]:any}) => {
             </div>
             <div className='flex justify-center items-center col-span-1 p-2 mt-3 '>
                 <Link href="https://transparencia.atricon.org.br" target="_blank">
-                    <Image src={imgRadar} alt="" width={250} height={150} /> 
+                    <Image className= "w-60 h-40" src={imgRadar} alt="" /> 
                 </Link>             
             </div>
         </div>   

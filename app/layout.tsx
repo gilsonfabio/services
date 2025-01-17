@@ -12,11 +12,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="">
-        <ThemeProvider>
-          <Navbar />
+      <body  suppressHydrationWarning={true} className="">
+        <ThemeProvider> 
+          <Navbar />         
           {children}
-          <Footer />
+          <Footer />          
         </ThemeProvider>
       </body>
     </html>

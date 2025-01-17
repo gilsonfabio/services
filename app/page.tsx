@@ -22,6 +22,13 @@ type TipServices = {
     "tsvDescricao": string;
 }
 
+type SecretariaProps = {
+    "secId": number;
+    "secCodigo": string;
+    "secDescricao": string;
+    "secUrlPage": string;
+}
+
 type ServicesProps = {
     "pagination": {
 		"page": number;
@@ -33,7 +40,7 @@ type ServicesProps = {
     "srvId": number; 
     "srvMsvId": number; 
     "srvTsvId": number; 
-    "srvDescricao": number; 
+    "srvDescricao": string; 
     "srvSecId": number; 
     "srvObjetivo": string; 
     "srvInformacao": string; 
@@ -45,6 +52,7 @@ type ServicesProps = {
 interface filtros {
     "modalidade" ?: Array<number>;
     "tipo" ?: Array<number>;
+    "secretaria" ?: Array<number>;
     "searchString" ?: string;
     "page" ?: number;
     "per_page" ?: number;
@@ -55,8 +63,9 @@ export default function Home() {
     const [modalidades, setModalidades] = useState<Array<ModServices>>([]);
     const [tipos, setTipos] = useState<Array<TipServices>>([]);
     const [servicos, setServicos] = useState<Array<ServicesProps>>([]);
+    const [secretarias, setSecretarias] = useState<Array<SecretariaProps>>([]);
     
-    const [showOptions, setShowOptions] = useState(false);
+    const [showModal, setShowModal] = React.useState(false);
 
     const [itensPerPage, setItensPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
@@ -67,24 +76,31 @@ export default function Home() {
     const perPageDefault = 12;
     const [newpage, setNewPage] = useState(0);
 
-    const [clicked, setClicked] = useState(false);
+    const [clicked, setClicked] = useState(true);
     const handleToggle = () => {
         setClicked((prev) => !prev);
     };
 
-    const [clickedTip, setClickedTip] = useState(false);
+    const [clickedTip, setClickedTip] = useState(true);
     const handleToggleTip = () => {
         setClickedTip((prev) => !prev);
+    };
+
+    const [clickedSec, setClickedSec] = useState(true);
+    const handleToggleSec = () => {
+        setClickedSec((prev) => !prev);
     };
 
     const [ids, setIds] = useState<Array<number>>([]);
     const [idsMod, setIdsMod] = useState<Array<number>>([]);
     const [idsTip, setIdsTip] = useState<Array<number>>([]);
+    const [idsSec, setIdsSec] = useState<Array<number>>([]);
     const [search, setSearch] = useState('');
 
     const testeJson:filtros = {
         modalidade: [],
-        tipo: [],        
+        tipo: [],
+        secretaria: [],        
         searchString: "",
         page: 1,
         per_page: 12
@@ -92,7 +108,8 @@ export default function Home() {
 
     useEffect(() => {   
         delete testeJson.modalidade;
-        delete testeJson.tipo;        
+        delete testeJson.tipo;     
+        delete testeJson.secretaria;        
         delete testeJson.searchString;
         delete testeJson.page;
         testeJson.page = 1;
@@ -115,14 +132,21 @@ export default function Home() {
         api.get("/modalidades").then(res => {
             setModalidades(res.data)           
         }).catch((err) => {
-            console.error("ops! ocorreu um erro" + err);
+            console.error("ops! ocorreu um erro modalidades" + err);
         });    
      
         api.get("/tipos").then(res => {
             setTipos(res.data)           
         }).catch((err) => {
-            console.error("ops! ocorreu um erro" + err);
+            console.error("ops! ocorreu um erro tipos" + err);
         }); 
+        
+        api.get("/secretarias").then(res => {
+            setSecretarias(res.data)           
+        }).catch((err) => {
+            console.error("ops! ocorreu um erro secretarias" + err);
+        }); 
+
         setAtualiza(1);      
     }, [])
 
@@ -137,6 +161,11 @@ export default function Home() {
                 testeJson.tipo = [...idsTip]
             }else {
                 delete testeJson.tipo;
+            } 
+            if (idsSec.length > 0 ) {
+                testeJson.secretaria = [...idsSec]
+            }else {
+                delete testeJson.secretaria;
             }        
             if (search !== "") {
                 testeJson.searchString = search;
@@ -165,7 +194,7 @@ export default function Home() {
                 console.log(error)
             })              
         }    
-    }, [idsMod, idsTip, search])
+    }, [idsMod, idsTip, idsSec, search])
 
     useEffect(() => {      
         if(newpage === 1) {
@@ -178,6 +207,11 @@ export default function Home() {
                 testeJson.tipo = [...idsTip]
             }else {
                 delete testeJson.tipo;
+            }
+            if (idsSec.length > 0 ) {
+                testeJson.secretaria = [...idsSec]
+            }else {
+                delete testeJson.secretaria;
             }
             if (search !== "") {
                 testeJson.searchString = search;
@@ -238,34 +272,48 @@ export default function Home() {
         }   
     };
 
+    const [filSecret, setFilSecret] = useState([]); 
+
+    const selectSecretaria = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedId = parseInt(event.target.value);
+    if (idsSec.includes(selectedId)) {
+        const newIds = idsSec.filter((id) => id !== selectedId);
+        setIds(newIds);
+        setIdsSec(newIds);
+    } else {
+        const newIds = [...idsSec];
+        newIds.push(selectedId);
+        setIds(newIds);
+        setIdsSec(newIds);
+        }   
+    };
+
     function handleSearch() {
         setAtualiza(1);
     }
     
-    const handleClick = () => {
-        setShowOptions(!showOptions);      
-    };
-
     return (
-        <div className='w-full h-auto z-30'>
+        <div className='w-full h-auto z-30 bg-gray-300 dark:bg-gray-700'>
             <div className='flex flex-col md:flex-row w-full h-auto z-30'>
-                <div className='bg-gray-300 w-full md:w-[25%] h-auto z-10'>
-                    <span className="text-green-700 text-base font-semibold ml-3">
+                <div className='bg-gray-300 dark:bg-gray-700 w-full md:w-[25%] h-auto z-10 md:ml-20'>
+                    <span className="text-green-700 text-lg font-semibold ml-3 md:ml-0">
                         Filtro de Serviços
                     </span>
-                    <div className='w-72 ml-3 mt-0 mb-3 z-40'>
+                    <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                         <div>
                             <li className={`accordion_item ${clicked ? "active mb-2" : ""} list-none`}>
-                                <button className="button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointertext-left flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg" onClick={handleToggle}>
+                                <button className={clicked ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                    onClick={handleToggle}>
                                     Modalidades
                                     <span className="control">{clicked ? "—" : "+"} </span>
                                 </button>
-                                <div className={`answer_wrapper ${clicked ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400" : "hidden"}`}> 
+                                <div className={`answer_wrapper ${clicked ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
                                     <div className={`answer ${clicked ? "active" : "hidden"}` }>
                                         <div className="h-auto">
                                             {modalidades.map((item) => (
-                                            <div key={item.msvId} className='flex flex-row justify-between items-center w-64'>
-                                                <span className="text-sm font-semibold">{item.msvDescricao}</span>
+                                            <div key={item.msvId} className='flex flex-row justify-between items-center w-full mb-2'>
+                                                <span className="text-md font-semibold">{item.msvDescricao}</span>
                                                 <input
                                                     className="cursor-pointer"
                                                     type="checkbox"
@@ -279,21 +327,53 @@ export default function Home() {
                                     </div>
                                 </div>
                             </li>                                
+                        </div> 
+                    </div>
+                    <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
+                        <div>
+                            <li className={`accordion_item ${clickedSec ? "active mb-2" : ""} list-none`}>
+                            <button className={clickedSec ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                 onClick={handleToggleSec}>
+                                    Secretarias
+                                    <span className="control">{clickedSec ? "—" : "+"} </span>
+                                </button>
+                                <div className={`answer_wrapper ${clickedSec ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
+                                    <div className={`answer ${clickedSec ? "active" : "hidden"}` }>
+                                        <div className="h-auto">
+                                            {secretarias.map((item) => (
+                                            <div key={item.secId} className='flex flex-row justify-between items-center w-full mb-2'>
+                                                <span className="text-md font-semibold">{item.secDescricao}</span>
+                                                <input
+                                                    className="cursor-pointer"
+                                                    type="checkbox"
+                                                    value={item.secId}
+                                                    onChange={selectSecretaria}
+                                                    checked={idsSec.includes(item.secId) ? true : false}
+                                                />
+                                            </div>
+                                            ))}
+                                        </div>  
+                                    </div>
+                                </div>
+                            </li>                                
                         </div>
                     </div>
-                    <div className='w-72 ml-3 mt-0 mb-3 z-40'>
+                    <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                         <div>
                             <li className={`accordion_item ${clickedTip ? "active mb-2" : ""} list-none`}>
-                                <button className="button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointertext-left flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg" onClick={handleToggleTip}>
+                            <button className={clickedTip ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                 onClick={handleToggleTip}>
                                     Tipos de Serviços
                                     <span className="control">{clickedTip ? "—" : "+"} </span>
                                 </button>
-                                <div className={`answer_wrapper ${clickedTip ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400" : "hidden"}`}> 
+                                <div className={`answer_wrapper ${clickedTip ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
                                     <div className={`answer ${clickedTip ? "active" : "hidden"}` }>
                                         <div className="h-auto">
                                             {tipos.map((item) => (
-                                            <div key={item.tsvId} className='flex flex-row justify-between items-center w-64'>
-                                                <span className="text-sm font-semibold">{item.tsvDescricao}</span>
+                                            <div key={item.tsvId} className='flex flex-row justify-between items-center w-full mb-2'>
+                                                <span className="text-md font-semibold">{item.tsvDescricao}</span>
                                                 <input
                                                     className="cursor-pointer"
                                                     type="checkbox"
@@ -310,12 +390,12 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col bg-gray-400 w-full justify-center md:w-[75%] h-auto'>
-                    <div className='flex items-center justify-center md:w-full p-2'>
-                        <div className='flex flex-row justify-start items-center w-full'>
+                <div className='flex flex-col bg-gray-400 w-full justify-center md:w-[75%] h-auto mr-20'>
+                    <div className='flex items-center justify-center md:w-full p-2 mt-5 mb-5'>
+                        <div className='flex flex-row justify-start items-center w-full h-full p-2'>
                             <input type="search" 
                                 className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" 
-                                placeholder="Busca" 
+                                placeholder="O que você procura?" 
                                 aria-label="Search" 
                                 aria-describedby="button-addon3" 
                                 value={search} 
@@ -329,14 +409,14 @@ export default function Home() {
                             </button>
                         </div>
                     </div>
-                    <div className='flex bg-gray-500 w-full h-auto '>
-                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800'> 
-                            <div className='w-full h-auto mr-2 dark:bg-[#F3F3F3] '> 
+                    <div className='flex bg-gray-500 dark:bg-gray-900 w-full h-auto '>
+                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800 '> 
+                            <div className='w-full h-auto mr-2 dark:bg-gray-800 '> 
                                 <div className='flex flex-col w-full h-full text-black'>
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
-                                    {servicos?.map((item:any, idx) => {
-                                        return <Link key={idx} href={"/"}>
-                                        <div className='bg-white mt-1 mb-3 rounded overflow-hidden shadow-lg hover:bg-[#008C3D]/40'> 
+                                    {servicos?.map((item:any, idx: any) => (
+                                        <Link key={idx} href={`/Admin/Modal/${item.srvId}`}>
+                                        <div className='bg-white mt-1 mb-3 rounded-lg overflow-hidden shadow-lg hover:bg-[#008C3D]/40 dark:hover:text-white '> 
                                             <div className="flex flex-row items-start px-2 py-0 mt-1 ">
                                                 <div className="flex w-auto h-auto bg-green-600 rounded-full items-start p-2">
                                                     <FaCogs className="w-6 h-6 text-white"/>
@@ -345,14 +425,10 @@ export default function Home() {
                                                     <div className="text-base font-bold mb-0">{item.srvDescricao}</div>
                                                 </div>                                  
                                             </div>
-                                            <div className="flex flex-row items-start justify-between px-2 py-0 ">
-                                                <div className="flex flex-col items-start px-2 py-1">
-                                                    <span className='text-[12px] font-bold'>ID</span>
-                                                    <div className="text-[12px] mb-0">{item.srvId}</div>
-                                                </div> 
+                                            <div className="flex flex-row items-start justify-between px-2 py-0 ">                                                
                                                 <div className="flex flex-col items-start px-2 py-1 ">
                                                     <span className='text-[12px] font-bold'>Secretaria</span>
-                                                    <div className="text-[12px] mb-0">
+                                                    <div className="text-[12px] mb-0 font-semibold">
                                                         {item.secDescricao}
                                                     </div>
                                                 </div>
@@ -360,12 +436,12 @@ export default function Home() {
                                             <div className="flex flex-row items-start justify-between px-2 ">
                                                 <div className="flex flex-col items-start px-2 py-2">
                                                     <span className='text-[12px] font-bold'>Objetivo</span>
-                                                    <div className="text-[12px] mb-0">{item.srvObjetivo}</div>
+                                                    <div className="text-[14px] mb-0">{item.srvObjetivo}</div>
                                                 </div>                
-                                            </div>
-                                        </div>                                                            
-                                    </Link>                  
-                                    })}
+                                            </div>                                           
+                                        </div>                    
+                                        </Link>                                                                             
+                                    ))}
                                     </div>
                                 </div>
                                 <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 '> 
