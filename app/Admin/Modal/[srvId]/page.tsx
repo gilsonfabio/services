@@ -30,7 +30,7 @@ export default function Modal({ params }: any) {
     let idSrv = params.srvId;
     axios({
         method: 'get',    
-        url: `http://localhost:3333/searchServ/${idSrv}`
+        url: `https://backservices.vercel.app/searchServ/${idSrv}`
     }).then(function(response) {
         setServicos(response.data)
         console.log(response.data)

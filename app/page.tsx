@@ -120,7 +120,7 @@ export default function Home() {
 
         axios({
             method: 'post',    
-            url: `http://localhost:3333/servicos`,
+            url: `https://backservices.vercel.app/servicos`,
             data: testeJson,
         }).then(function(response) {
             setServicos(response.data.servicos)
@@ -185,7 +185,7 @@ export default function Home() {
 
             axios({
                 method: 'post',    
-                url: `http://localhost:3333/servicos`,
+                url: `https://backservices.vercel.app/servicos`,
                 data: testeJson,
             }).then(function(response) {
                 setServicos(response.data.servicos)
@@ -227,7 +227,7 @@ export default function Home() {
 
             axios({
                 method: 'post',    
-                url: `http://localhost:3333/servicos`,
+                url: `https://backservices.vercel.app/servicos`,
                 data: testeJson,
             }).then(function(response) {
                 setServicos(response.data.servicos)
