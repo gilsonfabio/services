@@ -293,22 +293,22 @@ export default function Home() {
     }
     
     return (
-        <div className='w-full h-auto z-30 bg-gray-300 dark:bg-gray-700'>
+        <div className='w-full h-auto z-30 bg-gray-300 dark:bg-black'>
             <div className='flex flex-col md:flex-row w-full h-auto z-30'>
-                <div className='bg-gray-300 dark:bg-gray-700 w-full md:w-[25%] h-auto z-10 md:ml-20'>
-                    <span className="text-green-700 text-lg font-semibold ml-3 md:ml-0">
+                <div className='bg-gray-300 dark:bg-black w-full md:w-[25%] h-auto z-10 md:ml-20'>
+                    <span className="text-green-700 dark:text-white text-lg font-semibold ml-3 md:ml-0">
                         Filtro de Serviços
                     </span>
                     <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                         <div>
                             <li className={`accordion_item ${clicked ? "active mb-2" : ""} list-none`}>
-                                <button className={clicked ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                <button className={clicked ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                     onClick={handleToggle}>
                                     Modalidades
                                     <span className="control">{clicked ? "—" : "+"} </span>
                                 </button>
-                                <div className={`answer_wrapper ${clicked ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
+                                <div className={`answer_wrapper ${clicked ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
                                     <div className={`answer ${clicked ? "active" : "hidden"}` }>
                                         <div className="h-auto">
                                             {modalidades.map((item) => (
@@ -332,13 +332,13 @@ export default function Home() {
                     <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                         <div>
                             <li className={`accordion_item ${clickedSec ? "active mb-2" : ""} list-none`}>
-                            <button className={clickedSec ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                            <button className={clickedSec ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                  onClick={handleToggleSec}>
                                     Secretarias
                                     <span className="control">{clickedSec ? "—" : "+"} </span>
                                 </button>
-                                <div className={`answer_wrapper ${clickedSec ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
+                                <div className={`answer_wrapper ${clickedSec ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
                                     <div className={`answer ${clickedSec ? "active" : "hidden"}` }>
                                         <div className="h-auto">
                                             {secretarias.map((item) => (
@@ -362,13 +362,13 @@ export default function Home() {
                     <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                         <div>
                             <li className={`accordion_item ${clickedTip ? "active mb-2" : ""} list-none`}>
-                            <button className={clickedTip ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                            <button className={clickedTip ? "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                "button p-2 text-green-700 font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                  onClick={handleToggleTip}>
                                     Tipos de Serviços
                                     <span className="control">{clickedTip ? "—" : "+"} </span>
                                 </button>
-                                <div className={`answer_wrapper ${clickedTip ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-gray-800 border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
+                                <div className={`answer_wrapper ${clickedTip ? "active h-auto p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg" : "hidden"}`}> 
                                     <div className={`answer ${clickedTip ? "active" : "hidden"}` }>
                                         <div className="h-auto">
                                             {tipos.map((item) => (
@@ -390,11 +390,11 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col bg-gray-400 w-full justify-center md:w-[75%] h-auto mr-20'>
+                <div className='flex flex-col bg-[#dbead5] dark:bg-white w-full md:w-[75%] h-auto mr-20'>
                     <div className='flex items-center justify-center md:w-full p-2 mt-5 mb-5'>
                         <div className='flex flex-row justify-start items-center w-full h-full p-2'>
                             <input type="search" 
-                                className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" 
+                                className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-black dark:text-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" 
                                 placeholder="O que você procura?" 
                                 aria-label="Search" 
                                 aria-describedby="button-addon3" 
@@ -416,7 +416,7 @@ export default function Home() {
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
                                     {servicos?.map((item:any, idx: any) => (
                                         <Link key={idx} href={`/Admin/Modal/${item.srvId}`}>
-                                        <div className='bg-white mt-1 mb-3 rounded-lg overflow-hidden shadow-lg hover:bg-[#008C3D]/40 dark:hover:text-white '> 
+                                        <div className='bg-white mt-1 mb-3 rounded-lg overflow-hidden shadow-lg hover:bg-[#008C3D]/40 dark:hover:bg-black dark:hover:text-white '> 
                                             <div className="flex flex-row items-start px-2 py-0 mt-1 ">
                                                 <div className="flex w-auto h-auto bg-green-600 rounded-full items-start p-2">
                                                     <FaCogs className="w-6 h-6 text-white"/>
@@ -444,7 +444,7 @@ export default function Home() {
                                     ))}
                                     </div>
                                 </div>
-                                <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 '> 
+                                <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 '> 
                                     <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>                                 
                                     </div>
                                     <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
